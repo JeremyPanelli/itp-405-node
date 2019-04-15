@@ -43,3 +43,15 @@ app.get('/api/artists', function(request, response){
 });
 
 app.listen(process.env.PORT || 8000);
+
+const WebSocket = require("ws");
+
+const wss = new WebSocket.Server({ server });
+
+wss.on("connection", ws => {
+  ws.on("message", message => {
+    wss.clients.forEach(client => {
+      client.send(message);
+    });
+  });
+});
